@@ -257,27 +257,57 @@ namespace WindowsFormsApp1
 
         void showCube() // List<point> p)
         {
-            
-
             List<point> p = points;
-            for (int i = 0; i < p.Count; i++)
+            try
             {
-                double temp_x = p[i].x + 200;
-                double temp_y = p[i].y + 200;
-                //map.SetPixel(p[i].x + 200, p[i].y + 200, p[i].color);
-
-                for (int xx = (int)temp_x - 3; xx < temp_x + 3; xx++)
+                for (int i = 0; i < p.Count; i++)
                 {
-                    for (int yy = (int)temp_y - 3; yy < temp_y + 3; yy++)
+                    Console.Write("!!!!!");
+                    Console.Write(p[i].x);
+                    Console.Write(" ");
+                    Console.WriteLine(p[i].y);
+                }
+
+
+                for (int i = 0; i < p.Count; i++)
+                {
+                    double temp_x = p[i].x + 200;
+                    double temp_y = p[i].y + 200;
+                    //map.SetPixel(p[i].x + 200, p[i].y + 200, p[i].color);
+
+                    for (int xx = (int)temp_x - 3; xx < temp_x + 3; xx++)
                     {
-                        map.SetPixel(xx, yy, p[i].color);
+                        for (int yy = (int)temp_y - 3; yy < temp_y + 3; yy++)
+                        {
+                            map.SetPixel(xx, yy, p[i].color);
+                        }
                     }
                 }
-            }
 
-            for (int i = 0; i < edges.Count; i++)
+                for (int i = 0; i < edges.Count; i++)
+                {
+                    drawEdge(edges[i], 200);
+                }
+
+                label1.Text = (p[0].x).ToString() + " " + (p[0].y).ToString();
+                label2.Text = (p[1].x).ToString() + " " + (p[1].y).ToString();
+                label3.Text = (p[2].x).ToString() + " " + (p[2].y).ToString();
+                label4.Text = (p[3].x).ToString() + " " + (p[3].y).ToString();
+                label5.Text = (p[4].x).ToString() + " " + (p[4].y).ToString();
+                label6.Text = (p[5].x).ToString() + " " + (p[5].y).ToString();
+                label7.Text = (p[6].x).ToString() + " " + (p[6].y).ToString();
+                label8.Text = (p[7].x).ToString() + " " + (p[7].y).ToString();
+            }
+            catch(Exception e) 
             {
-                drawEdge(edges[i], 200);
+                label1.Text = (p[0].x).ToString() + " " + (p[0].y).ToString();
+                label2.Text = (p[1].x).ToString() + " " + (p[1].y).ToString();
+                label3.Text = (p[2].x).ToString() + " " + (p[2].y).ToString();
+                label4.Text = (p[3].x).ToString() + " " + (p[3].y).ToString();
+                label5.Text = (p[4].x).ToString() + " " + (p[4].y).ToString();
+                label6.Text = (p[5].x).ToString() + " " + (p[5].y).ToString();
+                label7.Text = (p[6].x).ToString() + " " + (p[6].y).ToString();
+                label8.Text = (p[7].x).ToString() + " " + (p[7].y).ToString();
             }
 
 
@@ -363,7 +393,7 @@ namespace WindowsFormsApp1
                     }
                 }
 
-                points[i].x = (int)res[0];
+                points[i].x = (int)res[0]; // можно убрать инт и преобразовывать только на выводе
                 points[i].y = (int)res[1];
                 points[i].z = (int)res[2];
             }
@@ -455,9 +485,9 @@ namespace WindowsFormsApp1
                     }
                 }
 
-                points[i].x = res[0];
-                points[i].y = res[1];
-                points[i].z = res[2];
+                points[i].x = (int)res[0];
+                points[i].y = (int)res[1];
+                points[i].z = (int)res[2];
             }
         }
 
@@ -515,8 +545,8 @@ namespace WindowsFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            makeCube();
-            showCube(); 
+            makeCube(); // заполнение точек и ребер
+            showCube();  // отрисовка. если другая проекция, то переделать вывод у
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -622,6 +652,11 @@ namespace WindowsFormsApp1
             clean();
             MirrorZ();
             showCube();
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
