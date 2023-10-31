@@ -86,6 +86,7 @@
             this.pictureBox.Size = new System.Drawing.Size(817, 734);
             this.pictureBox.TabIndex = 1;
             this.pictureBox.TabStop = false;
+            this.pictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox_Paint);
             // 
             // textBox1
             // 

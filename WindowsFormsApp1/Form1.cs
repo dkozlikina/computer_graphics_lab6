@@ -145,10 +145,10 @@ namespace WindowsFormsApp1
         void makeCube()
         {
             // верхние вершины 
-            points.Add(new point(0, 100, 100, Color.AliceBlue));
-            points.Add(new point(0, 0, 100, Color.AliceBlue));
-            points.Add(new point(100, 0, 100, Color.AliceBlue));
-            points.Add(new point(100, 100, 100, Color.AliceBlue));
+            points.Add(new point(0, 100, 100, Color.Blue));
+            points.Add(new point(0, 0, 100, Color.Blue));
+            points.Add(new point(100, 0, 100, Color.Blue));
+            points.Add(new point(100, 100, 100, Color.Blue));
 
             // нижние вершины 
             points.Add(new point(0, 100, 0, Color.HotPink));
@@ -255,63 +255,71 @@ namespace WindowsFormsApp1
             //pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
         }
 
+        public void DrawLinePoint(PaintEventArgs e)
+        {
+            for (int i = 0; i < edges.Count; i++)
+            {
+                Pen myPen = new Pen(edges[i].color, 2);
+                e.Graphics.DrawLine(myPen, 
+                                   new Point((int)edges[i].a.x + 200, (int)edges[i].a.y + 200), 
+                                   new Point((int)edges[i].b.x + 200, (int)edges[i].b.y + 200));
+            }
+                
+        }
+
         void showCube() // List<point> p)
         {
             List<point> p = points;
             try
             {
                 for (int i = 0; i < p.Count; i++)
+            {
+                //int temp_x = ((int)p[i].x) + 200;
+                //int temp_y = ((int)p[i].y) + 200;
+                double temp_x = p[i].x + 200;
+                double temp_y = p[i].y + 200;
+                //map.SetPixel(Convert.ToInt32(temp_x), Convert.ToInt32(temp_y), p[i].color);
+            
+                for (int xx = (int)(temp_x - 3); xx < (int)(temp_x + 3); xx++)
                 {
-                    Console.Write("!!!!!");
-                    Console.Write(p[i].x);
-                    Console.Write(" ");
-                    Console.WriteLine(p[i].y);
-                }
-
-
-                for (int i = 0; i < p.Count; i++)
-                {
-                    double temp_x = p[i].x + 200;
-                    double temp_y = p[i].y + 200;
-                    //map.SetPixel(p[i].x + 200, p[i].y + 200, p[i].color);
-
-                    for (int xx = (int)temp_x - 3; xx < temp_x + 3; xx++)
+                    for (int yy = (int)(temp_y - 3); yy < (int)(temp_y + 3); yy++)
                     {
-                        for (int yy = (int)temp_y - 3; yy < temp_y + 3; yy++)
-                        {
-                            map.SetPixel(xx, yy, p[i].color);
-                        }
+                        map.SetPixel(xx, yy, p[i].color);
                     }
                 }
-
-                for (int i = 0; i < edges.Count; i++)
-                {
-                    drawEdge(edges[i], 200);
-                }
-
-                label1.Text = (p[0].x).ToString() + " " + (p[0].y).ToString();
-                label2.Text = (p[1].x).ToString() + " " + (p[1].y).ToString();
-                label3.Text = (p[2].x).ToString() + " " + (p[2].y).ToString();
-                label4.Text = (p[3].x).ToString() + " " + (p[3].y).ToString();
-                label5.Text = (p[4].x).ToString() + " " + (p[4].y).ToString();
-                label6.Text = (p[5].x).ToString() + " " + (p[5].y).ToString();
-                label7.Text = (p[6].x).ToString() + " " + (p[6].y).ToString();
-                label8.Text = (p[7].x).ToString() + " " + (p[7].y).ToString();
             }
-            catch(Exception e) 
+
+                //for (int i = 0; i < edges.Count; i++)
+                //{
+                //    drawEdge(edges[i], 200);
+                //    ////label1.Text = edges.Count.ToString();
+                //    //Pen myPen = new Pen(Color.Blue, 2);
+                //    //Graphics.DrawLine(myPen, 0, 0, 60, 30);
+                //}
+
+                label1.Text = ((int)p[0].x).ToString() + " " + ((int)p[0].y).ToString();
+                label2.Text = ((int)p[1].x).ToString() + " " + ((int)p[1].y).ToString();
+                label3.Text = ((int)p[2].x).ToString() + " " + ((int)p[2].y).ToString();
+                label4.Text = ((int)p[3].x).ToString() + " " + ((int)p[3].y).ToString();
+                label5.Text = ((int)p[4].x).ToString() + " " + ((int)p[4].y).ToString();
+                label6.Text = ((int)p[5].x).ToString() + " " + ((int)p[5].y).ToString();
+                label7.Text = ((int)p[6].x).ToString() + " " + ((int)p[6].y).ToString();
+                label8.Text = ((int)p[7].x).ToString() + " " + ((int)p[7].y).ToString();
+            }
+            catch (Exception e)
             {
-                label1.Text = (p[0].x).ToString() + " " + (p[0].y).ToString();
-                label2.Text = (p[1].x).ToString() + " " + (p[1].y).ToString();
-                label3.Text = (p[2].x).ToString() + " " + (p[2].y).ToString();
-                label4.Text = (p[3].x).ToString() + " " + (p[3].y).ToString();
-                label5.Text = (p[4].x).ToString() + " " + (p[4].y).ToString();
-                label6.Text = (p[5].x).ToString() + " " + (p[5].y).ToString();
-                label7.Text = (p[6].x).ToString() + " " + (p[6].y).ToString();
-                label8.Text = (p[7].x).ToString() + " " + (p[7].y).ToString();
+                label1.Text = ((int)p[0].x).ToString() + " " + ((int)p[0].y).ToString();
+                label2.Text = ((int)p[1].x).ToString() + " " + ((int)p[1].y).ToString();
+                label3.Text = ((int)p[2].x).ToString() + " " + ((int)p[2].y).ToString();
+                label4.Text = ((int)p[3].x).ToString() + " " + ((int)p[3].y).ToString();
+                label5.Text = ((int)p[4].x).ToString() + " " + ((int)p[4].y).ToString();
+                label6.Text = ((int)p[5].x).ToString() + " " + ((int)p[5].y).ToString();
+                label7.Text = ((int)p[6].x).ToString() + " " + ((int)p[6].y).ToString();
+                label8.Text = ((int)p[7].x).ToString() + " " + ((int)p[7].y).ToString();
             }
 
 
-            
+
 
             pictureBox.Image = map;
             //DrawLine(200, 200, 500, 200, Color.Red); // Y
@@ -338,10 +346,12 @@ namespace WindowsFormsApp1
         {
             double[,] res = getOneMatr(4);
 
-            res[1, 1] = Math.Cos(Angle);
-            res[2, 1] = -Math.Sin(Angle);
-            res[1, 2] = Math.Sin(Angle);
-            res[2, 2] = Math.Cos(Angle);
+            double cos = Math.Cos((Angle * (Math.PI)) / 180);
+            double sin = Math.Sin((Angle * (Math.PI)) / 180);
+            res[1, 1] = cos;
+            res[2, 1] = (-1) * sin;
+            res[1, 2] = sin;
+            res[2, 2] = cos;
             //return res;
             Rotate(res, Angle);
         }
@@ -350,10 +360,12 @@ namespace WindowsFormsApp1
         {
             double[,] res = getOneMatr(4);
 
-            res[0, 0] = Math.Cos(Angle);
-            res[2, 0] = -Math.Sin(Angle);
-            res[0, 2] = Math.Sin(Angle);
-            res[2, 2] = Math.Cos(Angle);
+            double cos = Math.Cos((Angle * (Math.PI)) / 180);
+            double sin = Math.Sin((Angle * (Math.PI)) / 180);
+            res[0, 0] = cos;
+            res[2, 0] = sin;
+            res[0, 2] = (-1) * sin;
+            res[2, 2] = cos;
             //return res;
             Rotate(res, Angle);
         }
@@ -362,10 +374,13 @@ namespace WindowsFormsApp1
         {
             double[,] res = getOneMatr(4);
 
-            res[0, 0] = Math.Cos(Angle);
-            res[1, 0] = -Math.Sin(Angle);
-            res[0, 1] = Math.Sin(Angle);
-            res[1, 1] = Math.Cos(Angle);
+            double cos = Math.Cos((Angle * (Math.PI)) / 180);
+            double sin = Math.Sin((Angle * (Math.PI)) / 180);
+
+            res[0, 0] = cos;
+            res[1, 0] = (-1) * sin;
+            res[0, 1] = sin;
+            res[1, 1] = cos;
             //return res;
             Rotate(res, Angle);
         }
@@ -393,9 +408,9 @@ namespace WindowsFormsApp1
                     }
                 }
 
-                points[i].x = (int)res[0]; // можно убрать инт и преобразовывать только на выводе
-                points[i].y = (int)res[1];
-                points[i].z = (int)res[2];
+                points[i].x = res[0]; // можно убрать инт и преобразовывать только на выводе
+                points[i].y = res[1];
+                points[i].z = res[2];
             }
         }
 
@@ -485,9 +500,9 @@ namespace WindowsFormsApp1
                     }
                 }
 
-                points[i].x = (int)res[0];
-                points[i].y = (int)res[1];
-                points[i].z = (int)res[2];
+                points[i].x = res[0];
+                points[i].y = res[1];
+                points[i].z = res[2];
             }
         }
 
@@ -537,9 +552,9 @@ namespace WindowsFormsApp1
                     }
                 }
 
-                points[i].x = (int)res[0];
-                points[i].y = (int)res[1];
-                points[i].z = (int)res[2];
+                points[i].x = res[0];
+                points[i].y = res[1];
+                points[i].z = res[2];
             }
         }
 
@@ -657,6 +672,11 @@ namespace WindowsFormsApp1
         private void label9_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void pictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            DrawLinePoint(e);
         }
     }
 }
