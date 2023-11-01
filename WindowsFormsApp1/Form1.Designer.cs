@@ -66,16 +66,17 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
+            this.button7 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1224, 12);
+            this.button1.Location = new System.Drawing.Point(1025, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(156, 23);
             this.button1.TabIndex = 0;
-            this.button1.Text = "Построить куб";
+            this.button1.Text = "Куб аксонометрия";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -142,7 +143,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(1030, 12);
+            this.button5.Location = new System.Drawing.Point(823, 12);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(156, 23);
             this.button5.TabIndex = 8;
@@ -245,7 +246,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1245, 656);
+            this.label1.Location = new System.Drawing.Point(1178, 656);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(24, 16);
             this.label1.TabIndex = 24;
@@ -254,7 +255,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1245, 672);
+            this.label2.Location = new System.Drawing.Point(1178, 672);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(24, 16);
             this.label2.TabIndex = 25;
@@ -263,7 +264,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(1245, 688);
+            this.label3.Location = new System.Drawing.Point(1178, 688);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(24, 16);
             this.label3.TabIndex = 26;
@@ -272,7 +273,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(1245, 704);
+            this.label4.Location = new System.Drawing.Point(1178, 704);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(24, 16);
             this.label4.TabIndex = 27;
@@ -281,7 +282,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(1339, 704);
+            this.label5.Location = new System.Drawing.Point(1288, 704);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(24, 16);
             this.label5.TabIndex = 31;
@@ -290,7 +291,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(1339, 688);
+            this.label6.Location = new System.Drawing.Point(1288, 688);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(24, 16);
             this.label6.TabIndex = 30;
@@ -299,7 +300,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1339, 672);
+            this.label7.Location = new System.Drawing.Point(1288, 672);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(24, 16);
             this.label7.TabIndex = 29;
@@ -308,7 +309,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(1339, 656);
+            this.label8.Location = new System.Drawing.Point(1288, 656);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(24, 16);
             this.label8.TabIndex = 28;
@@ -405,11 +406,22 @@
             this.label18.TabIndex = 41;
             this.label18.Text = "Отражение";
             // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(1224, 12);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(156, 23);
+            this.button7.TabIndex = 42;
+            this.button7.Text = "Куб перспектива";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1392, 731);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.label16);
@@ -497,6 +509,7 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Button button7;
     }
 }
 

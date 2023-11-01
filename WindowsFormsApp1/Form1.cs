@@ -88,6 +88,9 @@ namespace WindowsFormsApp1
 
         List<point> points = new List<point>();
         List<edge> edges = new List<edge>();
+        List<edge> axes = new List<edge>();
+        bool isPerspectPr = false;
+        double r = 0.001;
 
         public Form1()
         {
@@ -144,17 +147,29 @@ namespace WindowsFormsApp1
         //}
         void makeCube()
         {
+            //// верхние вершины 
+            //points.Add(new point(0, 100, 100, Color.Blue));
+            //points.Add(new point(0, 0, 100, Color.Blue));
+            //points.Add(new point(100, 0, 100, Color.Blue));
+            //points.Add(new point(100, 100, 100, Color.Blue));
+
+            //// нижние вершины 
+            //points.Add(new point(0, 100, 0, Color.HotPink));
+            //points.Add(new point(0, 0, 0, Color.HotPink));
+            //points.Add(new point(100, 0, 0, Color.HotPink));
+            //points.Add(new point(100, 100, 0, Color.HotPink));
+
             // верхние вершины 
-            points.Add(new point(0, 100, 100, Color.Blue));
-            points.Add(new point(0, 0, 100, Color.Blue));
-            points.Add(new point(100, 0, 100, Color.Blue));
-            points.Add(new point(100, 100, 100, Color.Blue));
+            points.Add(new point(100, 200, 200, Color.Blue));
+            points.Add(new point(100, 100, 200, Color.Blue));
+            points.Add(new point(200, 100, 200, Color.Blue));
+            points.Add(new point(200, 200, 200, Color.Blue));
 
             // нижние вершины 
-            points.Add(new point(0, 100, 0, Color.HotPink));
-            points.Add(new point(0, 0, 0, Color.HotPink));
-            points.Add(new point(100, 0, 0, Color.HotPink));
-            points.Add(new point(100, 100, 0, Color.HotPink));
+            points.Add(new point(100, 200, 100, Color.HotPink));
+            points.Add(new point(100, 100, 100, Color.HotPink));
+            points.Add(new point(200, 100, 100, Color.HotPink));
+            points.Add(new point(200, 200, 100, Color.HotPink));
 
             // верхние рёбра 
             edges.Add(new edge(points[0], points[1], Color.Orange));
@@ -173,6 +188,11 @@ namespace WindowsFormsApp1
             edges.Add(new edge(points[5], points[6], Color.BlueViolet));
             edges.Add(new edge(points[6], points[7], Color.BlueViolet));
             edges.Add(new edge(points[7], points[4], Color.BlueViolet));
+
+            // оси
+            axes.Add(new edge(new point(0,0,0,Color.Black), new point(500, 0, 0, Color.Blue), Color.Blue));
+            axes.Add(new edge(new point(0, 0, 0, Color.Black), new point(0, 0, 500, Color.Red), Color.Red));
+            axes.Add(new edge(new point(0, 0, 0, Color.Black), new point(0, 500, 0, Color.Green), Color.Green));
         }
 
         void drawEdge(edge e, int delta)
@@ -257,28 +277,66 @@ namespace WindowsFormsApp1
 
         public void DrawLinePoint(PaintEventArgs e)
         {
-            for (int i = 0; i < edges.Count; i++)
+            if (isPerspectPr)
             {
-                Pen myPen = new Pen(edges[i].color, 2);
-                e.Graphics.DrawLine(myPen, 
-                                   new Point((int)edges[i].a.x + 200, (int)edges[i].a.y + 200), 
-                                   new Point((int)edges[i].b.x + 200, (int)edges[i].b.y + 200));
+                for (int i = 0; i < edges.Count; i++)
+                {
+                    
+                    double ah = r * edges[i].a.z + 1;
+                    double bh = r * edges[i].b.z + 1;
+
+                    double temp_ax = edges[i].a.x / ah + 200;
+                    double temp_ay = edges[i].a.y / ah + 200;
+
+                    double temp_bx = edges[i].b.x / bh + 200;
+                    double temp_by = edges[i].b.y / bh + 200;
+
+                    Pen myPen = new Pen(edges[i].color, 2);
+                    e.Graphics.DrawLine(myPen,
+                                       new Point((int)temp_ax, (int)temp_ay),
+                                       new Point((int)temp_bx, (int)temp_by));
+                }
             }
-                
+            else
+            {
+                for (int i = 0; i < edges.Count; i++)
+                {
+                    Pen myPen = new Pen(edges[i].color, 2);
+                    e.Graphics.DrawLine(myPen,
+                                       new Point((int)edges[i].a.x + 200, (int)edges[i].a.y + 200),
+                                       new Point((int)edges[i].b.x + 200, (int)edges[i].b.y + 200));
+                }
+            }
+            
+
+            for(int i = 0; i < axes.Count; i++)
+            {
+                Pen myPen = new Pen(axes[i].color, 2);
+                e.Graphics.DrawLine(myPen,
+                                   new Point((int)axes[i].a.x + 200, (int)axes[i].a.y + 200),
+                                   new Point((int)axes[i].b.x + 200, (int)axes[i].b.y + 200));
+            }
+
+            //for (int i = 0; i < points.Count; i++)
+            //{
+            //    RectangleF rect = new RectangleF(points[i].);
+            //    Pen myPen = new Pen(edges[i].color, 3);
+            //    e.Graphics.DrawLine(myPen,
+            //                       new Point((int)edges[i].a.x + 200, (int)edges[i].a.y + 200),
+            //                       new Point((int)edges[i].b.x + 200, (int)edges[i].b.y + 200));
+            //}
+
         }
 
-        void showCube() // List<point> p)
+        void showCube()
         {
             List<point> p = points;
             try
             {
                 for (int i = 0; i < p.Count; i++)
-            {
-                //int temp_x = ((int)p[i].x) + 200;
-                //int temp_y = ((int)p[i].y) + 200;
+                {
                 double temp_x = p[i].x + 200;
                 double temp_y = p[i].y + 200;
-                //map.SetPixel(Convert.ToInt32(temp_x), Convert.ToInt32(temp_y), p[i].color);
             
                 for (int xx = (int)(temp_x - 3); xx < (int)(temp_x + 3); xx++)
                 {
@@ -289,41 +347,76 @@ namespace WindowsFormsApp1
                 }
             }
 
-                //for (int i = 0; i < edges.Count; i++)
-                //{
-                //    drawEdge(edges[i], 200);
-                //    ////label1.Text = edges.Count.ToString();
-                //    //Pen myPen = new Pen(Color.Blue, 2);
-                //    //Graphics.DrawLine(myPen, 0, 0, 60, 30);
-                //}
-
-                label1.Text = ((int)p[0].x).ToString() + " " + ((int)p[0].y).ToString();
-                label2.Text = ((int)p[1].x).ToString() + " " + ((int)p[1].y).ToString();
-                label3.Text = ((int)p[2].x).ToString() + " " + ((int)p[2].y).ToString();
-                label4.Text = ((int)p[3].x).ToString() + " " + ((int)p[3].y).ToString();
-                label5.Text = ((int)p[4].x).ToString() + " " + ((int)p[4].y).ToString();
-                label6.Text = ((int)p[5].x).ToString() + " " + ((int)p[5].y).ToString();
-                label7.Text = ((int)p[6].x).ToString() + " " + ((int)p[6].y).ToString();
-                label8.Text = ((int)p[7].x).ToString() + " " + ((int)p[7].y).ToString();
+                label1.Text = ((int)p[0].x).ToString() + " " + ((int)p[0].y).ToString() + " " + ((int)p[0].z).ToString();
+                label2.Text = ((int)p[1].x).ToString() + " " + ((int)p[1].y).ToString() + " " + ((int)p[1].z).ToString();
+                label3.Text = ((int)p[2].x).ToString() + " " + ((int)p[2].y).ToString() + " " + ((int)p[2].z).ToString();
+                label4.Text = ((int)p[3].x).ToString() + " " + ((int)p[3].y).ToString() + " " + ((int)p[3].z).ToString();
+                label5.Text = ((int)p[4].x).ToString() + " " + ((int)p[4].y).ToString() + " " + ((int)p[4].z).ToString();
+                label6.Text = ((int)p[5].x).ToString() + " " + ((int)p[5].y).ToString() + " " + ((int)p[5].z).ToString();
+                label7.Text = ((int)p[6].x).ToString() + " " + ((int)p[6].y).ToString() + " " + ((int)p[6].z).ToString();
+                label8.Text = ((int)p[7].x).ToString() + " " + ((int)p[7].y).ToString() + " " + ((int)p[7].z).ToString();
             }
             catch (Exception e)
             {
-                label1.Text = ((int)p[0].x).ToString() + " " + ((int)p[0].y).ToString();
-                label2.Text = ((int)p[1].x).ToString() + " " + ((int)p[1].y).ToString();
-                label3.Text = ((int)p[2].x).ToString() + " " + ((int)p[2].y).ToString();
-                label4.Text = ((int)p[3].x).ToString() + " " + ((int)p[3].y).ToString();
-                label5.Text = ((int)p[4].x).ToString() + " " + ((int)p[4].y).ToString();
-                label6.Text = ((int)p[5].x).ToString() + " " + ((int)p[5].y).ToString();
-                label7.Text = ((int)p[6].x).ToString() + " " + ((int)p[6].y).ToString();
-                label8.Text = ((int)p[7].x).ToString() + " " + ((int)p[7].y).ToString();
+                label1.Text = ((int)p[0].x).ToString() + " " + ((int)p[0].y).ToString() + " " + ((int)p[0].z).ToString();
+                label2.Text = ((int)p[1].x).ToString() + " " + ((int)p[1].y).ToString() + " " + ((int)p[1].z).ToString();
+                label3.Text = ((int)p[2].x).ToString() + " " + ((int)p[2].y).ToString() + " " + ((int)p[2].z).ToString();
+                label4.Text = ((int)p[3].x).ToString() + " " + ((int)p[3].y).ToString() + " " + ((int)p[3].z).ToString();
+                label5.Text = ((int)p[4].x).ToString() + " " + ((int)p[4].y).ToString() + " " + ((int)p[4].z).ToString();
+                label6.Text = ((int)p[5].x).ToString() + " " + ((int)p[5].y).ToString() + " " + ((int)p[5].z).ToString();
+                label7.Text = ((int)p[6].x).ToString() + " " + ((int)p[6].y).ToString() + " " + ((int)p[6].z).ToString();
+                label8.Text = ((int)p[7].x).ToString() + " " + ((int)p[7].y).ToString() + " " + ((int)p[7].z).ToString();
             }
 
+            pictureBox.Image = map;
+        }
+
+        void showCubePersp()
+        {
+            List<point> p = points;
+            try
+            {
+                for (int i = 0; i < p.Count; i++)
+                {
+                    double h = r * p[i].z + 1;
+
+                    double temp_x = p[i].x / h + 200;
+                    double temp_y = p[i].y / h + 200;
+                    
 
 
+
+                    for (int xx = (int)(temp_x - 3); xx < (int)(temp_x + 3); xx++)
+                    {
+                        for (int yy = (int)(temp_y - 3); yy < (int)(temp_y + 3); yy++)
+                        {
+                            map.SetPixel(xx, yy, p[i].color);
+                        }
+                    }
+                }
+
+                label1.Text = ((int)p[0].x).ToString() + " " + ((int)p[0].y).ToString() + " " + ((int)p[0].z).ToString();
+                label2.Text = ((int)p[1].x).ToString() + " " + ((int)p[1].y).ToString() + " " + ((int)p[1].z).ToString();
+                label3.Text = ((int)p[2].x).ToString() + " " + ((int)p[2].y).ToString() + " " + ((int)p[2].z).ToString();
+                label4.Text = ((int)p[3].x).ToString() + " " + ((int)p[3].y).ToString() + " " + ((int)p[3].z).ToString();
+                label5.Text = ((int)p[4].x).ToString() + " " + ((int)p[4].y).ToString() + " " + ((int)p[4].z).ToString();
+                label6.Text = ((int)p[5].x).ToString() + " " + ((int)p[5].y).ToString() + " " + ((int)p[5].z).ToString();
+                label7.Text = ((int)p[6].x).ToString() + " " + ((int)p[6].y).ToString() + " " + ((int)p[6].z).ToString();
+                label8.Text = ((int)p[7].x).ToString() + " " + ((int)p[7].y).ToString() + " " + ((int)p[7].z).ToString();
+            }
+            catch (Exception e)
+            {
+                label1.Text = ((int)p[0].x).ToString() + " " + ((int)p[0].y).ToString() + " " + ((int)p[0].z).ToString();
+                label2.Text = ((int)p[1].x).ToString() + " " + ((int)p[1].y).ToString() + " " + ((int)p[1].z).ToString();
+                label3.Text = ((int)p[2].x).ToString() + " " + ((int)p[2].y).ToString() + " " + ((int)p[2].z).ToString();
+                label4.Text = ((int)p[3].x).ToString() + " " + ((int)p[3].y).ToString() + " " + ((int)p[3].z).ToString();
+                label5.Text = ((int)p[4].x).ToString() + " " + ((int)p[4].y).ToString() + " " + ((int)p[4].z).ToString();
+                label6.Text = ((int)p[5].x).ToString() + " " + ((int)p[5].y).ToString() + " " + ((int)p[5].z).ToString();
+                label7.Text = ((int)p[6].x).ToString() + " " + ((int)p[6].y).ToString() + " " + ((int)p[6].z).ToString();
+                label8.Text = ((int)p[7].x).ToString() + " " + ((int)p[7].y).ToString() + " " + ((int)p[7].z).ToString();
+            }
 
             pictureBox.Image = map;
-            //DrawLine(200, 200, 500, 200, Color.Red); // Y
-            //DrawLine(200, 200, 200, 500, Color.Red);
         }
 
         double[,] getOneMatr(int n)
@@ -560,6 +653,7 @@ namespace WindowsFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
+            isPerspectPr = false;
             makeCube(); // заполнение точек и ребер
             showCube();  // отрисовка. если другая проекция, то переделать вывод у
         }
@@ -571,7 +665,11 @@ namespace WindowsFormsApp1
                 RotateX(30);
             else
                 RotateX(Convert.ToDouble(textBox1.Text));
-            showCube();
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -586,7 +684,11 @@ namespace WindowsFormsApp1
                 RotateY(30);
             else
                 RotateY(Convert.ToDouble(textBox2.Text));
-            showCube();
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -596,7 +698,11 @@ namespace WindowsFormsApp1
                 RotateZ(30);
             else
                 RotateZ(Convert.ToDouble(textBox3.Text));
-            showCube();
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -610,63 +716,99 @@ namespace WindowsFormsApp1
         {
             clean();
             Translate();
-            showCube();
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
             clean();
             Translate();
-            showCube();
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
             clean();
             Translate();
-            showCube();
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
         }
 
         private void button11_Click(object sender, EventArgs e)
         {
             clean();
             Scale();
-            showCube();
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
         }
 
         private void button10_Click(object sender, EventArgs e)
         {
             clean();
             Scale();
-            showCube();
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
             clean();
             Scale();
-            showCube();
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
             clean();
             MirrorX();
-            showCube();
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
         }
 
         private void button13_Click(object sender, EventArgs e)
         {
             clean();
             MirrorY();
-            showCube();
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
         }
 
         private void button14_Click(object sender, EventArgs e)
         {
             clean();
             MirrorZ();
-            showCube();
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
         }
 
         private void label9_Click(object sender, EventArgs e)
@@ -677,6 +819,15 @@ namespace WindowsFormsApp1
         private void pictureBox_Paint(object sender, PaintEventArgs e)
         {
             DrawLinePoint(e);
+        }
+
+        // куб перспектива
+        private void button7_Click_1(object sender, EventArgs e)
+        {
+            clean();
+            isPerspectPr = true;
+            makeCube();
+            showCubePersp();
         }
     }
 }
