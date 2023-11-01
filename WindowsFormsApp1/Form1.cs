@@ -91,6 +91,9 @@ namespace WindowsFormsApp1
         List<edge> axes = new List<edge>();
         bool isPerspectPr = false;
         double r = 0.001;
+        double d1 = 0; // координаты центра фигуры
+        double d2 = 0; 
+        double d3 = 0;
 
         public Form1()
         {
@@ -190,9 +193,9 @@ namespace WindowsFormsApp1
             edges.Add(new edge(points[7], points[4], Color.BlueViolet));
 
             // оси
-            axes.Add(new edge(new point(0,0,0,Color.Black), new point(500, 0, 0, Color.Blue), Color.Blue));
-            axes.Add(new edge(new point(0, 0, 0, Color.Black), new point(0, 0, 500, Color.Red), Color.Red));
-            axes.Add(new edge(new point(0, 0, 0, Color.Black), new point(0, 500, 0, Color.Green), Color.Green));
+            axes.Add(new edge(new point(0,0,0,Color.Black), new point(700, 0, 0, Color.Blue), Color.Blue));
+            axes.Add(new edge(new point(0, 0, 0, Color.Black), new point(0, 0, 700, Color.Red), Color.Red));
+            axes.Add(new edge(new point(0, 0, 0, Color.Black), new point(0, 700, 0, Color.Green), Color.Green));
         }
 
         void drawEdge(edge e, int delta)
@@ -435,7 +438,7 @@ namespace WindowsFormsApp1
             return matr;
         }
 
-        void RotateX(double Angle) // double[,]
+        void RotateX(double Angle) 
         {
             double[,] res = getOneMatr(4);
 
@@ -445,11 +448,10 @@ namespace WindowsFormsApp1
             res[2, 1] = (-1) * sin;
             res[1, 2] = sin;
             res[2, 2] = cos;
-            //return res;
             Rotate(res, Angle);
         }
 
-        void RotateY(double Angle) // double[,]
+        void RotateY(double Angle)
         {
             double[,] res = getOneMatr(4);
 
@@ -459,11 +461,10 @@ namespace WindowsFormsApp1
             res[2, 0] = sin;
             res[0, 2] = (-1) * sin;
             res[2, 2] = cos;
-            //return res;
             Rotate(res, Angle);
         }
 
-        void RotateZ(double Angle) // double[,]
+        void RotateZ(double Angle) 
         {
             double[,] res = getOneMatr(4);
 
@@ -474,13 +475,11 @@ namespace WindowsFormsApp1
             res[1, 0] = (-1) * sin;
             res[0, 1] = sin;
             res[1, 1] = cos;
-            //return res;
             Rotate(res, Angle);
         }
 
         void Rotate(double[,] T, double Angle)
         {
-            //double[,] T = getMatrRotateX(Angle);
             for (int i = 0; i < points.Count; i++)
             {
                 double[] new_p = new double[4];
@@ -553,6 +552,40 @@ namespace WindowsFormsApp1
             }
         }
 
+        void TranslateOn(double dx, double dy, double dz)
+        {
+            double[,] T = getOneMatr(4);
+
+            T[3, 0] = dx;
+            T[3, 1] = dy;
+            T[3, 2] = dz;
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                double[] new_p = new double[4];
+                new_p[0] = points[i].x;
+                new_p[1] = points[i].y;
+                new_p[2] = points[i].z;
+                new_p[3] = 1;
+
+                double[] res = new double[4];
+                for (int j = 0; j < 4; j++)
+                    res[j] = 0;
+
+                for (int k = 0; k < 4; k++)
+                {
+                    for (int l = 0; l < 4; l++)
+                    {
+                        res[k] += new_p[l] * T[l, k];
+                    }
+                }
+
+                points[i].x = res[0]; //(int)res[0];
+                points[i].y = res[1]; //(int)res[1];
+                points[i].z = res[2]; //(int)res[2];
+            }
+        }
+
         void Scale()
         {
             double[,] T = getOneMatr(4);
@@ -568,6 +601,65 @@ namespace WindowsFormsApp1
             if (textBox7.Text.Length != 0)
                 dz = Convert.ToDouble(textBox7.Text);
 
+            double d1 = points[0].x;
+            double d2 = points[0].y;
+            double d3 = points[0].z;
+            //TranslateOn(-200, -200, -200);
+            TranslateOn(-points[0].x, -points[0].y, -points[0].z);
+
+            T[0, 0] = dx;
+            T[1, 1] = dy;
+            T[2, 2] = dz;
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                double[] new_p = new double[4];
+                new_p[0] = points[i].x;
+                new_p[1] = points[i].y;
+                new_p[2] = points[i].z;
+                new_p[3] = 1;
+
+                double[] res = new double[4];
+                for (int j = 0; j < 4; j++)
+                    res[j] = 0;
+
+                for (int k = 0; k < 4; k++)
+                {
+                    for (int l = 0; l < 4; l++)
+                    {
+                        res[k] += new_p[l] * T[l, k];
+                    }
+                }
+
+                points[i].x = res[0];
+                points[i].y = res[1];
+                points[i].z = res[2];
+            }
+
+            TranslateOn(d1, d2, d3);
+        }
+
+        void newCentre()
+        {
+            d1 = 0;
+            d2 = 0;
+            d3 = 0;
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                d1 += points[i].x;
+                d2 += points[i].y;
+                d3 += points[i].z;
+            }
+
+            d1 /= points.Count;
+            d2 /= points.Count;
+            d3 /= points.Count;
+        }
+
+        void ScaleOn(double dx, double dy, double dz)
+        {
+            double[,] T = getOneMatr(4);
 
             T[0, 0] = dx;
             T[1, 1] = dy;
@@ -599,11 +691,31 @@ namespace WindowsFormsApp1
             }
         }
 
+        void ScaleCentre()
+        {
+            double dx = 1;
+            double dy = 1;
+            double dz = 1;
+
+            if (textBox12.Text.Length != 0)
+                dx = Convert.ToDouble(textBox12.Text);
+            if (textBox11.Text.Length != 0)
+                dy = Convert.ToDouble(textBox11.Text);
+            if (textBox10.Text.Length != 0)
+                dz = Convert.ToDouble(textBox10.Text);
+
+            newCentre();
+            TranslateOn(-d1, -d2, -d3);
+            ScaleOn(dx, dy, dz);
+
+            TranslateOn(d1, d2, d3);
+        }
+
         void MirrorX()
         {
             double[,] res = getOneMatr(4);
 
-            res[0, 0] = -1;
+            res[1, 1] = -1;
             Mirror(res);
         }
 
@@ -611,7 +723,8 @@ namespace WindowsFormsApp1
         {
             double[,] res = getOneMatr(4);
 
-            res[1, 1] = -1;
+            
+            res[0, 0] = -1;
             Mirror(res);
         }
 
@@ -653,6 +766,7 @@ namespace WindowsFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
+            clean();
             isPerspectPr = false;
             makeCube(); // заполнение точек и ребер
             showCube();  // отрисовка. если другая проекция, то переделать вывод у
@@ -745,28 +859,6 @@ namespace WindowsFormsApp1
                 showCube();
         }
 
-        private void button11_Click(object sender, EventArgs e)
-        {
-            clean();
-            Scale();
-
-            if (isPerspectPr)
-                showCubePersp();
-            else
-                showCube();
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            clean();
-            Scale();
-
-            if (isPerspectPr)
-                showCubePersp();
-            else
-                showCube();
-        }
-
         private void button9_Click(object sender, EventArgs e)
         {
             clean();
@@ -828,6 +920,128 @@ namespace WindowsFormsApp1
             isPerspectPr = true;
             makeCube();
             showCubePersp();
+        }
+
+        private void label19_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label20_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label21_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label22_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // масштабирование относительно центра
+        private void button8_Click_1(object sender, EventArgs e)
+        {
+            clean();
+            ScaleCentre();
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
+        }
+
+        private void textBox10_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox11_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox12_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        // roteteXCentre
+        private void button15_Click(object sender, EventArgs e)
+        {
+            clean();
+            if (textBox1.Text.Length == 0)
+            {
+                newCentre();
+                TranslateOn(-d1, -d2, -d3);
+                RotateX(30);
+                TranslateOn(d1, d2, d3);
+            }
+            else
+            {
+                newCentre();
+                TranslateOn(-d1, -d2, -d3);
+                RotateX(Convert.ToDouble(textBox1.Text));
+                TranslateOn(d1, d2, d3);
+            }
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
+        }
+
+        // roteteYCentre
+        private void button11_Click(object sender, EventArgs e)
+        {
+            clean();
+            if (textBox1.Text.Length == 0)
+            {
+                newCentre();
+                TranslateOn(-d1, -d2, -d3);
+                RotateY(30);
+                TranslateOn(d1, d2, d3);
+            }
+            else
+            {
+                newCentre();
+                TranslateOn(-d1, -d2, -d3);
+                RotateY(Convert.ToDouble(textBox1.Text));
+                TranslateOn(d1, d2, d3);
+            }
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
+        }
+
+        // roteteZCentre
+        private void button10_Click(object sender, EventArgs e)
+        {
+            clean();
+            if (textBox1.Text.Length == 0)
+            {
+                newCentre();
+                TranslateOn(-d1, -d2, -d3);
+                RotateZ(30);
+                TranslateOn(d1, d2, d3);
+            }
+            else
+            {
+                newCentre();
+                TranslateOn(-d1, -d2, -d3);
+                RotateZ(Convert.ToDouble(textBox1.Text));
+                TranslateOn(d1, d2, d3);
+            }
+
+            if (isPerspectPr)
+                showCubePersp();
+            else
+                showCube();
         }
     }
 }
