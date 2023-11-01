@@ -89,6 +89,7 @@ namespace WindowsFormsApp1
         List<point> points = new List<point>();
         List<edge> edges = new List<edge>();
         List<edge> axes = new List<edge>();
+        List<point> axes_points = new List<point>();
         bool isPerspectPr = false;
         double r = 0.001;
         double d1 = 0; // координаты центра фигуры
@@ -193,9 +194,15 @@ namespace WindowsFormsApp1
             edges.Add(new edge(points[7], points[4], Color.BlueViolet));
 
             // оси
-            axes.Add(new edge(new point(0,0,0,Color.Black), new point(700, 0, 0, Color.Blue), Color.Blue));
-            axes.Add(new edge(new point(0, 0, 0, Color.Black), new point(0, 0, 700, Color.Red), Color.Red));
-            axes.Add(new edge(new point(0, 0, 0, Color.Black), new point(0, 700, 0, Color.Green), Color.Green));
+
+            axes_points.Add(new point(0, 0, 0, Color.Black));
+            axes_points.Add(new point(700, 0, 0, Color.Blue)); // X
+            axes_points.Add(new point(0, 0, 700, Color.Red)); // Z
+            axes_points.Add(new point(0, 700, 0, Color.Green)); // Y
+
+            axes.Add(new edge(axes_points[0], axes_points[1], Color.Blue));
+            axes.Add(new edge(axes_points[0], axes_points[2], Color.Red));
+            axes.Add(new edge(axes_points[0], axes_points[3], Color.Green));
         }
 
         void drawEdge(edge e, int delta)
@@ -310,15 +317,25 @@ namespace WindowsFormsApp1
                                        new Point((int)edges[i].b.x + 200, (int)edges[i].b.y + 200));
                 }
             }
-            
 
-            for(int i = 0; i < axes.Count; i++)
+
+            for (int i = 0; i < axes.Count; i++)
             {
                 Pen myPen = new Pen(axes[i].color, 2);
                 e.Graphics.DrawLine(myPen,
                                    new Point((int)axes[i].a.x + 200, (int)axes[i].a.y + 200),
                                    new Point((int)axes[i].b.x + 200, (int)axes[i].b.y + 200));
             }
+
+            //axes_points
+
+            //for (int i = 0; i < axes.Count; i++)
+            //{
+            //    Pen myPen = new Pen(axes[i].color, 2);
+            //    e.Graphics.DrawLine(myPen,
+            //                       new Point((int)axes[i].a.x + 200, (int)axes[i].a.y + 200),
+            //                       new Point((int)axes[i].b.x + 200, (int)axes[i].b.y + 200));
+            //}
 
             //for (int i = 0; i < points.Count; i++)
             //{
@@ -358,6 +375,7 @@ namespace WindowsFormsApp1
                 label6.Text = ((int)p[5].x).ToString() + " " + ((int)p[5].y).ToString() + " " + ((int)p[5].z).ToString();
                 label7.Text = ((int)p[6].x).ToString() + " " + ((int)p[6].y).ToString() + " " + ((int)p[6].z).ToString();
                 label8.Text = ((int)p[7].x).ToString() + " " + ((int)p[7].y).ToString() + " " + ((int)p[7].z).ToString();
+
             }
             catch (Exception e)
             {
@@ -422,6 +440,18 @@ namespace WindowsFormsApp1
             pictureBox.Image = map;
         }
 
+        void start()
+        {
+            //RotateXAxes(45);
+            RotateZAxes(90);
+            RotateYAxes(90);
+            RotateXAxes(90);
+
+            label26.Text = axes_points[1].x.ToString() + " " + axes_points[1].y.ToString() + " " + axes_points[1].z.ToString();
+            label27.Text = axes_points[2].x.ToString() + " " + axes_points[2].y.ToString() + " " + axes_points[2].z.ToString();
+            label28.Text = axes_points[3].x.ToString() + " " + axes_points[3].y.ToString() + " " + axes_points[3].z.ToString();
+        }
+
         double[,] getOneMatr(int n)
         {
             double[,] matr = new double[4, 4];
@@ -451,6 +481,19 @@ namespace WindowsFormsApp1
             Rotate(res, Angle);
         }
 
+        void RotateXAxes(double Angle)
+        {
+            double[,] res = getOneMatr(4);
+
+            double cos = Math.Cos((Angle * (Math.PI)) / 180);
+            double sin = Math.Sin((Angle * (Math.PI)) / 180);
+            res[1, 1] = cos;
+            res[2, 1] = (-1) * sin;
+            res[1, 2] = sin;
+            res[2, 2] = cos;
+            RotateAxes(res, Angle);
+        }
+
         void RotateY(double Angle)
         {
             double[,] res = getOneMatr(4);
@@ -462,6 +505,19 @@ namespace WindowsFormsApp1
             res[0, 2] = (-1) * sin;
             res[2, 2] = cos;
             Rotate(res, Angle);
+        }
+
+        void RotateYAxes(double Angle)
+        {
+            double[,] res = getOneMatr(4);
+
+            double cos = Math.Cos((Angle * (Math.PI)) / 180);
+            double sin = Math.Sin((Angle * (Math.PI)) / 180);
+            res[0, 0] = cos;
+            res[2, 0] = sin;
+            res[0, 2] = (-1) * sin;
+            res[2, 2] = cos;
+            RotateAxes(res, Angle);
         }
 
         void RotateZ(double Angle) 
@@ -476,6 +532,48 @@ namespace WindowsFormsApp1
             res[0, 1] = sin;
             res[1, 1] = cos;
             Rotate(res, Angle);
+        }
+
+        void RotateZAxes(double Angle)
+        {
+            double[,] res = getOneMatr(4);
+
+            double cos = Math.Cos((Angle * (Math.PI)) / 180);
+            double sin = Math.Sin((Angle * (Math.PI)) / 180);
+
+            res[0, 0] = cos;
+            res[1, 0] = (-1) * sin;
+            res[0, 1] = sin;
+            res[1, 1] = cos;
+            RotateAxes(res, Angle);
+        }
+
+        void RotateAxes(double[,] T, double Angle)
+        {
+            for (int i = 0; i < axes_points.Count; i++)
+            {
+                double[] new_p = new double[4];
+                new_p[0] = axes_points[i].x;
+                new_p[1] = axes_points[i].y;
+                new_p[2] = axes_points[i].z;
+                new_p[3] = 1;
+
+                double[] res = new double[4];
+                for (int j = 0; j < 4; j++)
+                    res[j] = 0;
+
+                for (int k = 0; k < 4; k++)
+                {
+                    for (int l = 0; l < 4; l++)
+                    {
+                        res[k] += new_p[l] * T[l, k];
+                    }
+                }
+
+                axes_points[i].x = res[0]; // можно убрать инт и преобразовывать только на выводе
+                axes_points[i].y = res[1];
+                axes_points[i].z = res[2];
+            }
         }
 
         void Rotate(double[,] T, double Angle)
@@ -767,9 +865,12 @@ namespace WindowsFormsApp1
         private void button1_Click(object sender, EventArgs e)
         {
             clean();
+            
             isPerspectPr = false;
-            makeCube(); // заполнение точек и ребер
+            makeCube(); // заполнение точек, осей и ребер
+            start();
             showCube();  // отрисовка. если другая проекция, то переделать вывод у
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -919,6 +1020,7 @@ namespace WindowsFormsApp1
             clean();
             isPerspectPr = true;
             makeCube();
+            start();
             showCubePersp();
         }
 

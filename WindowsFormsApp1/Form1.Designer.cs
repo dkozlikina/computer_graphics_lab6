@@ -84,6 +84,9 @@
             this.button15 = new System.Windows.Forms.Button();
             this.textBox15 = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -585,11 +588,41 @@
             this.label25.TabIndex = 59;
             this.label25.Text = "относительно центра";
             // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(1110, 502);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(51, 16);
+            this.label26.TabIndex = 60;
+            this.label26.Text = "label26";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(1110, 518);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(51, 16);
+            this.label27.TabIndex = 61;
+            this.label27.Text = "label27";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(1110, 534);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(51, 16);
+            this.label28.TabIndex = 62;
+            this.label28.Text = "label28";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1545, 731);
+            this.Controls.Add(this.label28);
+            this.Controls.Add(this.label27);
+            this.Controls.Add(this.label26);
             this.Controls.Add(this.label25);
             this.Controls.Add(this.label24);
             this.Controls.Add(this.button10);
@@ -713,6 +746,9 @@
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.TextBox textBox15;
         private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label28;
     }
 }
 
