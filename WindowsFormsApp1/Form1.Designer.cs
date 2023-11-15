@@ -87,7 +87,9 @@
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -591,7 +593,7 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(1110, 502);
+            this.label26.Location = new System.Drawing.Point(1260, 666);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(51, 16);
             this.label26.TabIndex = 60;
@@ -600,7 +602,7 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(1110, 518);
+            this.label27.Location = new System.Drawing.Point(1260, 682);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(51, 16);
             this.label27.TabIndex = 61;
@@ -609,17 +611,28 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(1110, 534);
+            this.label28.Location = new System.Drawing.Point(1260, 698);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(51, 16);
             this.label28.TabIndex = 62;
             this.label28.Text = "label28";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(981, 455);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(247, 264);
+            this.pictureBox1.TabIndex = 63;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1545, 731);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label28);
             this.Controls.Add(this.label27);
             this.Controls.Add(this.label26);
@@ -683,6 +696,7 @@
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -749,6 +763,7 @@
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

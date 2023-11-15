@@ -19,27 +19,33 @@ using static System.Windows.Forms.LinkLabel;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 using static System.Windows.Forms.AxHost;
+using System.IO.Ports;
 
 namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
         public Bitmap map;
+        public Bitmap map2; // для маленького поля задания 2
+        //string cubeFilePath = "C:/Users/m8951/OneDrive/Рабочий стол/study/computer graphic/lab7/WindowsFormsApp1/input.txt";
+        string cubeFilePath = "inputTriangle.txt"; //  // inputCube
+
+        List<point> task2points = new List<point>();
 
         public class point
         {
             public double x;
             public double y;
             public double z;
-            public Color color;
+            //public Color color;
             //List<int> 
 
-            public point(double x, double y, double z, Color color)
+            public point(double x, double y, double z)
             {
                 this.x = x;
                 this.y = y;
                 this.z = z;
-                this.color = color;
+                //this.color = color;
             }
 
             //void draw()
@@ -58,13 +64,13 @@ namespace WindowsFormsApp1
         {
             public point a;
             public point b;
-            public Color color;
+            //public Color color;
 
-            public edge(point a, point b, Color color)
+            public edge(point a, point b)//, Color color)
             {
                 this.a = a;
                 this.b = b;
-                this.color = color;
+                //this.color = color;
             }
         }
 
@@ -100,10 +106,7 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
             map = new Bitmap(pictureBox.Width, pictureBox.Height);
-            //Graphics graphics = Graphics.FromImage(map);
-            //graphics.Clear(Color.White);
-            ////graphics = Graphics.FromImage(map);// mapPrim);
-            //pictureBox.Image = map;
+            map2 = new Bitmap(pictureBox1.Width, pictureBox1.Height);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -111,98 +114,30 @@ namespace WindowsFormsApp1
 
         }
 
-        // можно оформить как наследник класса фигур, чтобы рисовать разные 3д объекты
-        //class cube
-        //{
-        //    public List<point> points = new List<point>();
-        //    public List<edge> edges = new List<edge>();
-        //    cube()
-        //    {
-        //        // верхние вершины 
-        //        points.Add(new point(0, 100, 100, Color.AliceBlue));
-        //        points.Add(new point(0, 0, 100, Color.AliceBlue));
-        //        points.Add(new point(100, 0, 100, Color.AliceBlue));
-        //        points.Add(new point(100, 100, 100, Color.AliceBlue));
-
-        //        // нижние вершины 
-        //        points.Add(new point(0, 100, 0, Color.HotPink));
-        //        points.Add(new point(0, 0, 0, Color.HotPink));
-        //        points.Add(new point(100, 0, 0, Color.HotPink));
-        //        points.Add(new point(100, 100, 0, Color.HotPink));
-
-        //        // верхние рёбра 
-        //        edges.Add(new edge(points[0], points[1], Color.Orange));
-        //        edges.Add(new edge(points[1], points[2], Color.Orange));
-        //        edges.Add(new edge(points[2], points[3], Color.Orange));
-        //        edges.Add(new edge(points[3], points[0], Color.Orange));
-
-        //        // боковые рёбра 
-        //        edges.Add(new edge(points[0], points[4], Color.OldLace));
-        //        edges.Add(new edge(points[1], points[5], Color.OldLace));
-        //        edges.Add(new edge(points[2], points[6], Color.OldLace));
-        //        edges.Add(new edge(points[3], points[7], Color.OldLace));
-
-        //        // нижние рёбра 
-        //        edges.Add(new edge(points[4], points[5], Color.Silver));
-        //        edges.Add(new edge(points[5], points[6], Color.Silver));
-        //        edges.Add(new edge(points[6], points[7], Color.Silver));
-        //        edges.Add(new edge(points[7], points[4], Color.Silver));
-        //    }
-        //}
         void makeCube()
         {
-            //// верхние вершины 
-            //points.Add(new point(0, 100, 100, Color.Blue));
-            //points.Add(new point(0, 0, 100, Color.Blue));
-            //points.Add(new point(100, 0, 100, Color.Blue));
-            //points.Add(new point(100, 100, 100, Color.Blue));
+            string[] lines = File.ReadAllLines(cubeFilePath);
+            foreach (string line in lines)
+            {
+                string[] parts = line.Split(' ');
+                try
+                {
+                    if (parts.Length == 3) // точка
+                    {
+                        points.Add(new point(Convert.ToInt32(parts[0]), Convert.ToInt32(parts[1]), Convert.ToInt32(parts[2])));
+                    }
+                    if (parts.Length == 2) // грань
+                    {
+                        edges.Add(new edge(points[Convert.ToInt32(parts[0])], points[Convert.ToInt32(parts[1])]));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    label26.Text = line;
+                    label27.Text = parts.Length.ToString();
+                }
 
-            //// нижние вершины 
-            //points.Add(new point(0, 100, 0, Color.HotPink));
-            //points.Add(new point(0, 0, 0, Color.HotPink));
-            //points.Add(new point(100, 0, 0, Color.HotPink));
-            //points.Add(new point(100, 100, 0, Color.HotPink));
-
-            // верхние вершины 
-            points.Add(new point(100, 200, 200, Color.Blue));
-            points.Add(new point(100, 100, 200, Color.Blue));
-            points.Add(new point(200, 100, 200, Color.Blue));
-            points.Add(new point(200, 200, 200, Color.Blue));
-
-            // нижние вершины 
-            points.Add(new point(100, 200, 100, Color.HotPink));
-            points.Add(new point(100, 100, 100, Color.HotPink));
-            points.Add(new point(200, 100, 100, Color.HotPink));
-            points.Add(new point(200, 200, 100, Color.HotPink));
-
-            // верхние рёбра 
-            edges.Add(new edge(points[0], points[1], Color.Orange));
-            edges.Add(new edge(points[1], points[2], Color.Orange));
-            edges.Add(new edge(points[2], points[3], Color.Orange));
-            edges.Add(new edge(points[3], points[0], Color.Orange));
-
-            // боковые рёбра 
-            edges.Add(new edge(points[0], points[4], Color.GreenYellow));
-            edges.Add(new edge(points[1], points[5], Color.GreenYellow));
-            edges.Add(new edge(points[2], points[6], Color.GreenYellow));
-            edges.Add(new edge(points[3], points[7], Color.GreenYellow));
-
-            // нижние рёбра 
-            edges.Add(new edge(points[4], points[5], Color.BlueViolet));
-            edges.Add(new edge(points[5], points[6], Color.BlueViolet));
-            edges.Add(new edge(points[6], points[7], Color.BlueViolet));
-            edges.Add(new edge(points[7], points[4], Color.BlueViolet));
-
-            // оси
-
-            axes_points.Add(new point(0, 0, 0, Color.Black));
-            axes_points.Add(new point(700, 0, 0, Color.Blue)); // X
-            axes_points.Add(new point(0, 0, 700, Color.Red)); // Z
-            axes_points.Add(new point(0, 700, 0, Color.Green)); // Y
-
-            axes.Add(new edge(axes_points[0], axes_points[1], Color.Blue));
-            axes.Add(new edge(axes_points[0], axes_points[2], Color.Red));
-            axes.Add(new edge(axes_points[0], axes_points[3], Color.Green));
+            }
         }
 
         void drawEdge(edge e, int delta)
@@ -211,7 +146,7 @@ namespace WindowsFormsApp1
             double y1 = e.a.y + delta;
             double x2 = e.b.x + delta;
             double y2 = e.b.y + delta;
-            Color color = e.color;
+            Color color = Color.Black;// e.color;
 
             if (x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0 ||
                 x1 >= map.Width || y1 >= map.Height ||
@@ -301,7 +236,7 @@ namespace WindowsFormsApp1
                     double temp_bx = edges[i].b.x / bh + 200;
                     double temp_by = edges[i].b.y / bh + 200;
 
-                    Pen myPen = new Pen(edges[i].color, 2);
+                    Pen myPen = new Pen(Color.Black, 2);
                     e.Graphics.DrawLine(myPen,
                                        new Point((int)temp_ax, (int)temp_ay),
                                        new Point((int)temp_bx, (int)temp_by));
@@ -311,7 +246,7 @@ namespace WindowsFormsApp1
             {
                 for (int i = 0; i < edges.Count; i++)
                 {
-                    Pen myPen = new Pen(edges[i].color, 2);
+                    Pen myPen = new Pen(Color.Black, 2);
                     e.Graphics.DrawLine(myPen,
                                        new Point((int)edges[i].a.x + 200, (int)edges[i].a.y + 200),
                                        new Point((int)edges[i].b.x + 200, (int)edges[i].b.y + 200));
@@ -321,7 +256,7 @@ namespace WindowsFormsApp1
 
             for (int i = 0; i < axes.Count; i++)
             {
-                Pen myPen = new Pen(axes[i].color, 2);
+                Pen myPen = new Pen(Color.Black, 2);
                 e.Graphics.DrawLine(myPen,
                                    new Point((int)axes[i].a.x + 200, (int)axes[i].a.y + 200),
                                    new Point((int)axes[i].b.x + 200, (int)axes[i].b.y + 200));
@@ -362,7 +297,7 @@ namespace WindowsFormsApp1
                 {
                     for (int yy = (int)(temp_y - 3); yy < (int)(temp_y + 3); yy++)
                     {
-                        map.SetPixel(xx, yy, p[i].color);
+                        map.SetPixel(xx, yy, Color.Red);
                     }
                 }
             }
@@ -411,7 +346,7 @@ namespace WindowsFormsApp1
                     {
                         for (int yy = (int)(temp_y - 3); yy < (int)(temp_y + 3); yy++)
                         {
-                            map.SetPixel(xx, yy, p[i].color);
+                            map.SetPixel(xx, yy, Color.Red);
                         }
                     }
                 }
@@ -427,14 +362,14 @@ namespace WindowsFormsApp1
             }
             catch (Exception e)
             {
-                label1.Text = ((int)p[0].x).ToString() + " " + ((int)p[0].y).ToString() + " " + ((int)p[0].z).ToString();
-                label2.Text = ((int)p[1].x).ToString() + " " + ((int)p[1].y).ToString() + " " + ((int)p[1].z).ToString();
-                label3.Text = ((int)p[2].x).ToString() + " " + ((int)p[2].y).ToString() + " " + ((int)p[2].z).ToString();
-                label4.Text = ((int)p[3].x).ToString() + " " + ((int)p[3].y).ToString() + " " + ((int)p[3].z).ToString();
-                label5.Text = ((int)p[4].x).ToString() + " " + ((int)p[4].y).ToString() + " " + ((int)p[4].z).ToString();
-                label6.Text = ((int)p[5].x).ToString() + " " + ((int)p[5].y).ToString() + " " + ((int)p[5].z).ToString();
-                label7.Text = ((int)p[6].x).ToString() + " " + ((int)p[6].y).ToString() + " " + ((int)p[6].z).ToString();
-                label8.Text = ((int)p[7].x).ToString() + " " + ((int)p[7].y).ToString() + " " + ((int)p[7].z).ToString();
+                //label1.Text = ((int)p[0].x).ToString() + " " + ((int)p[0].y).ToString() + " " + ((int)p[0].z).ToString();
+                //label2.Text = ((int)p[1].x).ToString() + " " + ((int)p[1].y).ToString() + " " + ((int)p[1].z).ToString();
+                //label3.Text = ((int)p[2].x).ToString() + " " + ((int)p[2].y).ToString() + " " + ((int)p[2].z).ToString();
+                //label4.Text = ((int)p[3].x).ToString() + " " + ((int)p[3].y).ToString() + " " + ((int)p[3].z).ToString();
+                //label5.Text = ((int)p[4].x).ToString() + " " + ((int)p[4].y).ToString() + " " + ((int)p[4].z).ToString();
+                //label6.Text = ((int)p[5].x).ToString() + " " + ((int)p[5].y).ToString() + " " + ((int)p[5].z).ToString();
+                //label7.Text = ((int)p[6].x).ToString() + " " + ((int)p[6].y).ToString() + " " + ((int)p[6].z).ToString();
+                //label8.Text = ((int)p[7].x).ToString() + " " + ((int)p[7].y).ToString() + " " + ((int)p[7].z).ToString();
             }
 
             pictureBox.Image = map;
@@ -443,13 +378,13 @@ namespace WindowsFormsApp1
         void start()
         {
             //RotateXAxes(45);
-            RotateZAxes(90);
-            RotateYAxes(90);
-            RotateXAxes(90);
+            //RotateZAxes(90);
+            //RotateYAxes(90);
+            //RotateXAxes(90);
 
-            label26.Text = axes_points[1].x.ToString() + " " + axes_points[1].y.ToString() + " " + axes_points[1].z.ToString();
-            label27.Text = axes_points[2].x.ToString() + " " + axes_points[2].y.ToString() + " " + axes_points[2].z.ToString();
-            label28.Text = axes_points[3].x.ToString() + " " + axes_points[3].y.ToString() + " " + axes_points[3].z.ToString();
+            //label26.Text = axes_points[1].x.ToString() + " " + axes_points[1].y.ToString() + " " + axes_points[1].z.ToString();
+            //label27.Text = axes_points[2].x.ToString() + " " + axes_points[2].y.ToString() + " " + axes_points[2].z.ToString();
+            //label28.Text = axes_points[3].x.ToString() + " " + axes_points[3].y.ToString() + " " + axes_points[3].z.ToString();
         }
 
         double[,] getOneMatr(int n)
@@ -868,7 +803,7 @@ namespace WindowsFormsApp1
             
             isPerspectPr = false;
             makeCube(); // заполнение точек, осей и ребер
-            start();
+            //start();
             showCube();  // отрисовка. если другая проекция, то переделать вывод у
             
         }
@@ -1020,7 +955,7 @@ namespace WindowsFormsApp1
             clean();
             isPerspectPr = true;
             makeCube();
-            start();
+            //start();
             showCubePersp();
         }
 
@@ -1144,6 +1079,26 @@ namespace WindowsFormsApp1
                 showCubePersp();
             else
                 showCube();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            point new_p = new point(e.X, e.Y, 0);
+            task2points.Add(new_p);
+
+            for (int x = e.X - 3; x < e.X + 3; x++)
+            {
+                for (int y = e.Y - 3; y < e.Y + 3; y++)
+                {
+                    map2.SetPixel(x, y, Color.Red);
+                }
+            }
+            pictureBox1.Image = map2;
         }
     }
 }
