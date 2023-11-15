@@ -28,7 +28,8 @@ namespace WindowsFormsApp1
         public Bitmap map;
         public Bitmap map2; // для маленького поля задания 2
         //string cubeFilePath = "C:/Users/m8951/OneDrive/Рабочий стол/study/computer graphic/lab7/WindowsFormsApp1/input.txt";
-        string cubeFilePath = "inputTriangle.txt"; //  // inputCube
+        string cubeFilePath = "inputRomb.txt"; //  // inputCube // inputRomb // inputTriangle
+        string filePath;
 
         List<point> task2points = new List<point>();
 
@@ -116,28 +117,7 @@ namespace WindowsFormsApp1
 
         void makeCube()
         {
-            string[] lines = File.ReadAllLines(cubeFilePath);
-            foreach (string line in lines)
-            {
-                string[] parts = line.Split(' ');
-                try
-                {
-                    if (parts.Length == 3) // точка
-                    {
-                        points.Add(new point(Convert.ToInt32(parts[0]), Convert.ToInt32(parts[1]), Convert.ToInt32(parts[2])));
-                    }
-                    if (parts.Length == 2) // грань
-                    {
-                        edges.Add(new edge(points[Convert.ToInt32(parts[0])], points[Convert.ToInt32(parts[1])]));
-                    }
-                }
-                catch (Exception ex)
-                {
-                    label26.Text = line;
-                    label27.Text = parts.Length.ToString();
-                }
-
-            }
+            
         }
 
         void drawEdge(edge e, int delta)
@@ -314,14 +294,14 @@ namespace WindowsFormsApp1
             }
             catch (Exception e)
             {
-                label1.Text = ((int)p[0].x).ToString() + " " + ((int)p[0].y).ToString() + " " + ((int)p[0].z).ToString();
-                label2.Text = ((int)p[1].x).ToString() + " " + ((int)p[1].y).ToString() + " " + ((int)p[1].z).ToString();
-                label3.Text = ((int)p[2].x).ToString() + " " + ((int)p[2].y).ToString() + " " + ((int)p[2].z).ToString();
-                label4.Text = ((int)p[3].x).ToString() + " " + ((int)p[3].y).ToString() + " " + ((int)p[3].z).ToString();
-                label5.Text = ((int)p[4].x).ToString() + " " + ((int)p[4].y).ToString() + " " + ((int)p[4].z).ToString();
-                label6.Text = ((int)p[5].x).ToString() + " " + ((int)p[5].y).ToString() + " " + ((int)p[5].z).ToString();
-                label7.Text = ((int)p[6].x).ToString() + " " + ((int)p[6].y).ToString() + " " + ((int)p[6].z).ToString();
-                label8.Text = ((int)p[7].x).ToString() + " " + ((int)p[7].y).ToString() + " " + ((int)p[7].z).ToString();
+                //label1.Text = ((int)p[0].x).ToString() + " " + ((int)p[0].y).ToString() + " " + ((int)p[0].z).ToString();
+                //label2.Text = ((int)p[1].x).ToString() + " " + ((int)p[1].y).ToString() + " " + ((int)p[1].z).ToString();
+                //label3.Text = ((int)p[2].x).ToString() + " " + ((int)p[2].y).ToString() + " " + ((int)p[2].z).ToString();
+                //label4.Text = ((int)p[3].x).ToString() + " " + ((int)p[3].y).ToString() + " " + ((int)p[3].z).ToString();
+                //label5.Text = ((int)p[4].x).ToString() + " " + ((int)p[4].y).ToString() + " " + ((int)p[4].z).ToString();
+                //label6.Text = ((int)p[5].x).ToString() + " " + ((int)p[5].y).ToString() + " " + ((int)p[5].z).ToString();
+                //label7.Text = ((int)p[6].x).ToString() + " " + ((int)p[6].y).ToString() + " " + ((int)p[6].z).ToString();
+                //label8.Text = ((int)p[7].x).ToString() + " " + ((int)p[7].y).ToString() + " " + ((int)p[7].z).ToString();
             }
 
             pictureBox.Image = map;
@@ -953,6 +933,51 @@ namespace WindowsFormsApp1
         private void button7_Click_1(object sender, EventArgs e)
         {
             clean();
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = "c:\\Users\\m8951\\OneDrive\\Рабочий стол\\study\\computer graphics\\lab7\\WindowsFormsApp1\\WindowsFormsApp1\\bin\\Debug";//"c:\\";
+                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    filePath = openFileDialog.FileName;
+
+                    //Read the contents of the file into a stream
+                    var fileStream = openFileDialog.OpenFile();
+
+                    //using (StreamReader reader = new StreamReader(fileStream))
+                    //{
+                    //    fileContent = reader.ReadToEnd();
+                    //}
+                    string[] lines = File.ReadAllLines(filePath);
+                    foreach (string line in lines)
+                    {
+                        string[] parts = line.Split(' ');
+                        try
+                        {
+                            if (parts.Length == 3) // точка
+                            {
+                                points.Add(new point(Convert.ToInt32(parts[0]), Convert.ToInt32(parts[1]), Convert.ToInt32(parts[2])));
+                            }
+                            if (parts.Length == 2) // грань
+                            {
+                                edges.Add(new edge(points[Convert.ToInt32(parts[0])], points[Convert.ToInt32(parts[1])]));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            label26.Text = line;
+                            label27.Text = parts.Length.ToString();
+                        }
+
+                    }
+                }
+            }
+
             isPerspectPr = true;
             makeCube();
             //start();
