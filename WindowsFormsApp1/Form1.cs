@@ -777,15 +777,63 @@ namespace WindowsFormsApp1
             }
         }
 
+        /// <summary>
+        /// Аксонометрическое отображение выбранной из директории фигуры
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             clean();
-            
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = "c:\\Users\\m8951\\OneDrive\\Рабочий стол\\study\\computer graphics\\lab7\\WindowsFormsApp1\\WindowsFormsApp1\\bin\\Debug";//"c:\\";
+                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    filePath = openFileDialog.FileName;
+
+                    //Read the contents of the file into a stream
+                    var fileStream = openFileDialog.OpenFile();
+
+                    //using (StreamReader reader = new StreamReader(fileStream))
+                    //{
+                    //    fileContent = reader.ReadToEnd();
+                    //}
+                    string[] lines = File.ReadAllLines(filePath);
+                    foreach (string line in lines)
+                    {
+                        string[] parts = line.Split(' ');
+                        try
+                        {
+                            if (parts.Length == 3) // точка
+                            {
+                                points.Add(new point(Convert.ToInt32(parts[0]), Convert.ToInt32(parts[1]), Convert.ToInt32(parts[2])));
+                            }
+                            if (parts.Length == 2) // грань
+                            {
+                                edges.Add(new edge(points[Convert.ToInt32(parts[0])], points[Convert.ToInt32(parts[1])]));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            label26.Text = line;
+                            label27.Text = parts.Length.ToString();
+                        }
+
+                    }
+                }
+            }
+
             isPerspectPr = false;
             makeCube(); // заполнение точек, осей и ребер
             //start();
             showCube();  // отрисовка. если другая проекция, то переделать вывод у
-            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -930,6 +978,11 @@ namespace WindowsFormsApp1
         }
 
         // куб перспектива
+        /// <summary>
+        /// Перспективное отображение выбранной из директории фигуры
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button7_Click_1(object sender, EventArgs e)
         {
             clean();
@@ -1032,10 +1085,15 @@ namespace WindowsFormsApp1
         }
 
         // roteteXCentre
+        /// <summary>
+        /// Поворот вокрут своего центра по оси X
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button15_Click(object sender, EventArgs e)
         {
             clean();
-            if (textBox1.Text.Length == 0)
+            if (textBox15.Text.Length == 0)
             {
                 newCentre();
                 TranslateOn(-d1, -d2, -d3);
@@ -1046,7 +1104,7 @@ namespace WindowsFormsApp1
             {
                 newCentre();
                 TranslateOn(-d1, -d2, -d3);
-                RotateX(Convert.ToDouble(textBox1.Text));
+                RotateX(Convert.ToDouble(textBox15.Text));
                 TranslateOn(d1, d2, d3);
             }
 
@@ -1057,10 +1115,15 @@ namespace WindowsFormsApp1
         }
 
         // roteteYCentre
+        /// <summary>
+        /// Поворот вокруг центра по оси Y
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button11_Click(object sender, EventArgs e)
         {
             clean();
-            if (textBox1.Text.Length == 0)
+            if (textBox14.Text.Length == 0)
             {
                 newCentre();
                 TranslateOn(-d1, -d2, -d3);
@@ -1071,7 +1134,7 @@ namespace WindowsFormsApp1
             {
                 newCentre();
                 TranslateOn(-d1, -d2, -d3);
-                RotateY(Convert.ToDouble(textBox1.Text));
+                RotateY(Convert.ToDouble(textBox14.Text));
                 TranslateOn(d1, d2, d3);
             }
 
@@ -1082,10 +1145,11 @@ namespace WindowsFormsApp1
         }
 
         // roteteZCentre
+        /// Поворот вокруг центра по оси Z
         private void button10_Click(object sender, EventArgs e)
         {
             clean();
-            if (textBox1.Text.Length == 0)
+            if (textBox13.Text.Length == 0)
             {
                 newCentre();
                 TranslateOn(-d1, -d2, -d3);
@@ -1096,7 +1160,7 @@ namespace WindowsFormsApp1
             {
                 newCentre();
                 TranslateOn(-d1, -d2, -d3);
-                RotateZ(Convert.ToDouble(textBox1.Text));
+                RotateZ(Convert.ToDouble(textBox13.Text));
                 TranslateOn(d1, d2, d3);
             }
 

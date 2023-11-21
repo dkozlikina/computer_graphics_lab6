@@ -98,7 +98,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(156, 23);
             this.button1.TabIndex = 0;
-            this.button1.Text = "Куб аксонометрия";
+            this.button1.Text = "Аксонометрия";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -434,7 +434,7 @@
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(156, 23);
             this.button7.TabIndex = 42;
-            this.button7.Text = "Куб перспектива";
+            this.button7.Text = "Перспектива";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click_1);
             // 
