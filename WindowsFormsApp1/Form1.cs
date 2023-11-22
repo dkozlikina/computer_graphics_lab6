@@ -20,6 +20,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 using static System.Windows.Forms.AxHost;
 using System.IO.Ports;
+using static WindowsFormsApp1.Form1;
 
 namespace WindowsFormsApp1
 {
@@ -30,8 +31,11 @@ namespace WindowsFormsApp1
         //string cubeFilePath = "C:/Users/m8951/OneDrive/Рабочий стол/study/computer graphic/lab7/WindowsFormsApp1/input.txt";
         string cubeFilePath = "inputRomb.txt"; //  // inputCube // inputRomb // inputTriangle
         string filePath;
+        int divi = 5;
+        int task2startCount = 5;
 
-        List<point> task2points = new List<point>();
+        List<point> task2points = new List<point>(); // точки фигуры вращения
+        List<edge> task2edges = new List<edge>();
 
         public class point
         {
@@ -93,8 +97,8 @@ namespace WindowsFormsApp1
             }
         }
 
-        List<point> points = new List<point>();
-        List<edge> edges = new List<edge>();
+        List<point> points = new List<point>(); // точки основной фигуры, считанной из файла
+        List<edge> edges = new List<edge>(); 
         List<edge> axes = new List<edge>();
         List<point> axes_points = new List<point>();
         bool isPerspectPr = false;
@@ -103,11 +107,15 @@ namespace WindowsFormsApp1
         double d2 = 0; 
         double d3 = 0;
 
+
+
         public Form1()
         {
             InitializeComponent();
             map = new Bitmap(pictureBox.Width, pictureBox.Height);
             map2 = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            pictureBox.BackColor = Color.White;
+            pictureBox1.BackColor = Color.White;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -200,6 +208,10 @@ namespace WindowsFormsApp1
             //pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
         }
 
+        /// <summary>
+        /// Соединение точек линиями
+        /// </summary>
+        /// <param name="e"></param>
         public void DrawLinePoint(PaintEventArgs e)
         {
             if (isPerspectPr)
@@ -234,13 +246,13 @@ namespace WindowsFormsApp1
             }
 
 
-            for (int i = 0; i < axes.Count; i++)
-            {
-                Pen myPen = new Pen(Color.Black, 2);
-                e.Graphics.DrawLine(myPen,
-                                   new Point((int)axes[i].a.x + 200, (int)axes[i].a.y + 200),
-                                   new Point((int)axes[i].b.x + 200, (int)axes[i].b.y + 200));
-            }
+            //for (int i = 0; i < axes.Count; i++)
+            //{
+            //    Pen myPen = new Pen(Color.Black, 2);
+            //    e.Graphics.DrawLine(myPen,
+            //                       new Point((int)axes[i].a.x + 200, (int)axes[i].a.y + 200),
+            //                       new Point((int)axes[i].b.x + 200, (int)axes[i].b.y + 200));
+            //}
 
             //axes_points
 
@@ -263,6 +275,9 @@ namespace WindowsFormsApp1
 
         }
 
+        /// <summary>
+        /// Построить фигуру в аксонометрии по списку точек
+        /// </summary>
         void showCube()
         {
             List<point> p = points;
@@ -291,6 +306,8 @@ namespace WindowsFormsApp1
                 label7.Text = ((int)p[6].x).ToString() + " " + ((int)p[6].y).ToString() + " " + ((int)p[6].z).ToString();
                 label8.Text = ((int)p[7].x).ToString() + " " + ((int)p[7].y).ToString() + " " + ((int)p[7].z).ToString();
 
+                //label1.Text = points.Count.ToString();
+
             }
             catch (Exception e)
             {
@@ -307,6 +324,9 @@ namespace WindowsFormsApp1
             pictureBox.Image = map;
         }
 
+        /// <summary>
+        /// Построить фигуру в перспективе по списку точек
+        /// </summary>
         void showCubePersp()
         {
             List<point> p = points;
@@ -319,9 +339,6 @@ namespace WindowsFormsApp1
                     double temp_x = p[i].x / h + 200;
                     double temp_y = p[i].y / h + 200;
                     
-
-
-
                     for (int xx = (int)(temp_x - 3); xx < (int)(temp_x + 3); xx++)
                     {
                         for (int yy = (int)(temp_y - 3); yy < (int)(temp_y + 3); yy++)
@@ -513,7 +530,7 @@ namespace WindowsFormsApp1
                     }
                 }
 
-                points[i].x = res[0]; // можно убрать инт и преобразовывать только на выводе
+                points[i].x = res[0]; 
                 points[i].y = res[1];
                 points[i].z = res[2];
             }
@@ -1001,11 +1018,6 @@ namespace WindowsFormsApp1
 
                     //Read the contents of the file into a stream
                     var fileStream = openFileDialog.OpenFile();
-
-                    //using (StreamReader reader = new StreamReader(fileStream))
-                    //{
-                    //    fileContent = reader.ReadToEnd();
-                    //}
                     string[] lines = File.ReadAllLines(filePath);
                     foreach (string line in lines)
                     {
@@ -1175,10 +1187,19 @@ namespace WindowsFormsApp1
             
         }
 
+        /// <summary>
+        /// Установить точки на pictureBox1 для создания фигуры вращения
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
+            if (points.Count == 0) //task2points
+                // добавляем набор элементов 
+                comboBox1.Items.AddRange(new string[] { "X", "Y", "Z" });
+
             point new_p = new point(e.X, e.Y, 0);
-            task2points.Add(new_p);
+            points.Add(new_p);
 
             for (int x = e.X - 3; x < e.X + 3; x++)
             {
@@ -1188,6 +1209,180 @@ namespace WindowsFormsApp1
                 }
             }
             pictureBox1.Image = map2;
+
+            edges = new List<edge>();
+            for (int i = 0; i < points.Count - 1; i++)
+            {
+                edges.Add(new edge(points[i], points[i + 1]));
+            }
+            label26.Text = points.Count.ToString();
+        }
+
+        /// <summary>
+        /// Рисует грани фигуре вращения
+        /// </summary>
+        /// <param name="e"></param>
+        public void DrawLineTask2(PaintEventArgs e)
+        {
+
+            for (int i = 0; i < edges.Count; i++) //task2edges
+            {
+
+                Pen myPen = new Pen(Color.Black, 2);
+                e.Graphics.DrawLine(myPen,
+                                   new Point((int)edges[i].a.x, (int)edges[i].a.y),
+                                   new Point((int)edges[i].b.x, (int)edges[i].b.y));
+            }
+            label27.Text = edges.Count.ToString();
+        }
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            DrawLineTask2(e);
+        }
+
+        /// <summary>
+        /// Построить фигуру вращения
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button16_Click(object sender, EventArgs e)
+        {
+            
+            int divisions = 5;
+            string rotateAxis = "Y";
+            if (textBox16.Text.Length > 0)
+                divisions = Convert.ToInt32(textBox16.Text); //  количествo разбиений
+            divi = divisions;
+            if (comboBox1.Text.Length > 0)
+                rotateAxis = comboBox1.SelectedItem.ToString(); // ось вращения
+
+            task2startCount = points.Count;
+            for (int i = 0; i < points.Count; i++)
+                task2points.Add(new point(points[i].x, points[i].y, points[i].z)); //дублируем точки из списка точек, которые будем вращать
+
+            for (int j = 0; j < divisions; j++)
+            {
+                double d1 = points[0].x;
+                double d2 = points[0].y;
+                double d3 = points[0].z;
+                TranslateOn(-d1, -d2, -d3);
+                RotateY(360 / divisions);
+                TranslateOn(d1, d2, d3);
+
+
+                for (int i = 0; i < points.Count; i++)
+                    task2points.Add(new point(points[i].x, points[i].y, points[i].z));
+
+            }
+
+            //if (rotateAxis == "X")
+            //{
+            //    for(int i = 0; i < divisions; i++)
+            //    {
+
+            //    }
+            //}
+
+            //if (rotateAxis == "Y")
+            //{
+            //    for (int j = 0; j < divisions; j++)
+            //    {
+            //        RotateY(360 / divisions);
+            //        for (int i = 0; i < points.Count; i++)
+            //            task2points.Add(points[i]);
+
+            //    }
+            //}
+
+            //if (rotateAxis == "Z")
+            //{
+
+            //}
+
+
+
+
+            edges = new List<edge>();
+            for (int i = 0; i < points.Count+1; i++)
+            {
+                for (int j = 0; j < divisions+1; j++)
+                {
+                    edges.Add(new edge(task2points[i * points.Count + j], task2points[i * points.Count + j + 1]));
+                    edges.Add(new edge(task2points[i * points.Count + j], task2points[i * points.Count + j + points.Count]));
+                }
+                
+            }
+
+
+
+
+
+            //else
+            //{
+            //    for (int j = 0; j < divisions; j++)
+            //    {
+            //        RotateY(360 / divisions);
+            //        for (int i = 0; i < points.Count; i++)
+            //            task2points.Add(points[i]);
+
+            //    }
+            //}
+
+            points = task2points;
+            //label26.Text = points.Count.ToString();
+            label27.Text = task2points.Count.ToString();
+            showCube();
+        }
+
+        /// <summary>
+        /// Очистить pictureBox1 - поле для задания фигуры вращения
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button17_Click(object sender, EventArgs e)
+        {
+            points = new List<point>();
+            edges = new List<edge>();
+            task2edges = new List<edge>();
+            task2points = new List<point>();
+            Graphics graphics = Graphics.FromImage(map2);
+            graphics.Clear(Color.White);
+            graphics = Graphics.FromImage(map2);// mapPrim);
+            graphics.Clear(Color.White);
+            graphics.Clear(Color.White);
+
+            map2 = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            pictureBox1.Image = map2;
+        }
+
+        /// <summary>
+        /// Запись данных в файл в формате .obj
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button18_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "OBJ files|*.obj";
+            saveFileDialog1.Title = "Save an OBJ File";
+            saveFileDialog1.ShowDialog();
+
+            if (saveFileDialog1.FileName != "")
+            {
+                using (StreamWriter writer = new StreamWriter(saveFileDialog1.OpenFile()))
+                {
+                    for (int i = 0; i < task2points.Count; i++)
+                    {
+                        writer.WriteLine("v " + task2points[i].x.ToString() + " " +  task2points[i].y.ToString() + " " + task2points[i].z.ToString());
+                    }
+
+                    for (int i = 0; i < task2points.Count - 2; i++)
+                    {
+                        //writer.WriteLine("f " + (i).ToString() + " " + (i + 1).ToString() + " " + (i + task2startCount).ToString());
+                        writer.WriteLine("f " + (i).ToString() + " " + (i + 1).ToString() + " " + (i + 2).ToString());
+                    }
+                }
+            }
         }
     }
 }

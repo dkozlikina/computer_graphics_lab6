@@ -88,6 +88,13 @@
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button16 = new System.Windows.Forms.Button();
+            this.button17 = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.textBox16 = new System.Windows.Forms.TextBox();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.button18 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -625,13 +632,84 @@
             this.pictureBox1.TabIndex = 63;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
             this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(1240, 546);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(245, 27);
+            this.button16.TabIndex = 64;
+            this.button16.Text = "Построить фигуру вращения";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(1240, 513);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(89, 27);
+            this.button17.TabIndex = 65;
+            this.button17.Text = "Очистить";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(1243, 455);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(51, 24);
+            this.comboBox1.TabIndex = 66;
+            // 
+            // textBox16
+            // 
+            this.textBox16.Location = new System.Drawing.Point(1242, 485);
+            this.textBox16.Name = "textBox16";
+            this.textBox16.Size = new System.Drawing.Size(52, 22);
+            this.textBox16.TabIndex = 67;
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(1309, 458);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(98, 16);
+            this.label29.TabIndex = 68;
+            this.label29.Text = "Ось вращения";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(1309, 491);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(160, 16);
+            this.label30.TabIndex = 69;
+            this.label30.Text = "Количество разбиений";
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(1381, 515);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(104, 23);
+            this.button18.TabIndex = 70;
+            this.button18.Text = "Сохранить";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1545, 731);
+            this.Controls.Add(this.button18);
+            this.Controls.Add(this.label30);
+            this.Controls.Add(this.label29);
+            this.Controls.Add(this.textBox16);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.button17);
+            this.Controls.Add(this.button16);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label28);
             this.Controls.Add(this.label27);
@@ -764,6 +842,13 @@
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.TextBox textBox16;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Button button18;
     }
 }
 
