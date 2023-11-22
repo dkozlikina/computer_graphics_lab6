@@ -1303,16 +1303,32 @@ namespace WindowsFormsApp1
 
 
             edges = new List<edge>();
-            for (int i = 0; i < points.Count+1; i++)
-            {
-                for (int j = 0; j < divisions+1; j++)
-                {
-                    edges.Add(new edge(task2points[i * points.Count + j], task2points[i * points.Count + j + 1]));
-                    edges.Add(new edge(task2points[i * points.Count + j], task2points[i * points.Count + j + points.Count]));
-                }
-                
-            }
+            //for (int i = 0; i < points.Count; i++)
+            //{
+            //    for (int j = 0; j < divisions; j++)
+            //    {
+            //        //edges.Add(new edge(task2points[i * points.Count + j], task2points[i * points.Count + j + 1]));
+            //        //edges.Add(new edge(task2points[i * points.Count + j], task2points[i * points.Count + j + points.Count]));
 
+            //        //edges.Add(new edge(task2points[i * points.Count + j], task2points[i * points.Count + j + points.Count]));
+
+            //        for(int k = 0; k < 3; k++)
+            //        {
+
+            //        }
+            //    }
+                
+            //}
+
+            for (int j = 0; j < divisions; j++)
+            {
+                for (int k = 0; k < points.Count - 1; k++)
+                {
+                    edges.Add(new edge(task2points[j * points.Count + k], task2points[j * points.Count + k + 1])); // 0 1 ;
+                    edges.Add(new edge(task2points[j * points.Count + k + 1], task2points[j * points.Count + k + points.Count + 1])); // 1 
+                    edges.Add(new edge(task2points[j * points.Count + k], task2points[j * points.Count + k + 1 + points.Count]));
+                }
+            }
 
 
 
@@ -1381,8 +1397,89 @@ namespace WindowsFormsApp1
                         //writer.WriteLine("f " + (i).ToString() + " " + (i + 1).ToString() + " " + (i + task2startCount).ToString());
                         writer.WriteLine("f " + (i).ToString() + " " + (i + 1).ToString() + " " + (i + 2).ToString());
                     }
+
+                    for (int j = 0; j < divi; j++)
+                    {
+                        for (int k = 0; k < task2startCount - 1; k++)
+                        {
+                            // 0 1 4
+                            writer.WriteLine("f " + (j * task2startCount + k).ToString() + " " + (j * task2startCount + k + 1).ToString() + " " + (j * task2startCount + k + task2startCount + 1).ToString());
+                            //edges.Add(new edge(task2points[j * points.Count + k], task2points[j * points.Count + k + 1])); // 0 1 ;
+                            //edges.Add(new edge(task2points[j * points.Count + k + 1], task2points[j * points.Count + k + points.Count + 1])); // 1 4
+                            //edges.Add(new edge(task2points[j * points.Count + k], task2points[j * points.Count + k + 1 + points.Count])); // 0 4
+                        }
+
+                        for (int k = 0; k < task2startCount - 2; k++)
+                        {
+                            // 5 4 1
+                            writer.WriteLine("f " + (j * task2startCount + k + task2startCount + 2).ToString() + " " + (j * task2startCount + k + 1).ToString() + " " + (j * task2startCount + k + task2startCount + 1).ToString());
+                            //edges.Add(new edge(task2points[j * points.Count + k], task2points[j * points.Count + k + 1])); // 0 1 ;
+                            //edges.Add(new edge(task2points[j * points.Count + k + 1], task2points[j * points.Count + k + points.Count + 1])); // 1 4
+                            //edges.Add(new edge(task2points[j * points.Count + k], task2points[j * points.Count + k + 1 + points.Count])); // 0 4
+                        }
+                    }
                 }
             }
+
+
+        }
+
+        /// <summary>
+        /// Загрузить из obj файла
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button19_Click(object sender, EventArgs e)
+        {
+            points = new List<point>();
+            edges = new List<edge>();
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = "c:\\Users\\m8951\\OneDrive\\Рабочий стол\\study\\computer graphics\\lab7\\WindowsFormsApp1\\WindowsFormsApp1\\bin\\Debug";//"c:\\";
+                openFileDialog.Filter = "OBJ files|*.obj";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    filePath = openFileDialog.FileName;
+
+                    //Read the contents of the file into a stream
+                    var fileStream = openFileDialog.OpenFile();
+                    string[] lines = File.ReadAllLines(filePath);
+                    foreach (string line in lines)
+                    {
+                        string[] parts = line.Split(' ');
+                        try
+                        {
+                            if (parts[0] == "v") // точка
+                            {
+                                points.Add(new point(Convert.ToInt32(parts[1]), Convert.ToInt32(parts[2]), Convert.ToInt32(parts[3])));
+                            }
+                            if (parts[0] == "f") // грань
+                            {
+                                edges.Add(new edge(points[Convert.ToInt32(parts[1])], points[Convert.ToInt32(parts[2])]));
+                                edges.Add(new edge(points[Convert.ToInt32(parts[1])], points[Convert.ToInt32(parts[3])]));
+                                edges.Add(new edge(points[Convert.ToInt32(parts[3])], points[Convert.ToInt32(parts[2])]));
+                            }
+                            label26.Text = line;
+                        }
+                        catch (Exception ex)
+                        {
+                            label26.Text = line;
+                            label27.Text = parts.Length.ToString();
+                        }
+
+                    }
+                }
+                
+            }
+
+            isPerspectPr = false;
+            makeCube(); // заполнение точек, осей и ребер
+            showCube();
         }
     }
 }

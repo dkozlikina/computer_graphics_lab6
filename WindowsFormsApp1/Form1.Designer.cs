@@ -95,6 +95,7 @@
             this.label29 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.button18 = new System.Windows.Forms.Button();
+            this.button19 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -639,7 +640,7 @@
             // 
             this.button16.Location = new System.Drawing.Point(1240, 546);
             this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(245, 27);
+            this.button16.Size = new System.Drawing.Size(271, 27);
             this.button16.TabIndex = 64;
             this.button16.Text = "Построить фигуру вращения";
             this.button16.UseVisualStyleBackColor = true;
@@ -690,19 +691,30 @@
             // 
             // button18
             // 
-            this.button18.Location = new System.Drawing.Point(1381, 515);
+            this.button18.Location = new System.Drawing.Point(1335, 515);
             this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(104, 23);
+            this.button18.Size = new System.Drawing.Size(84, 23);
             this.button18.TabIndex = 70;
             this.button18.Text = "Сохранить";
             this.button18.UseVisualStyleBackColor = true;
             this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
+            // button19
+            // 
+            this.button19.Location = new System.Drawing.Point(1425, 515);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(84, 23);
+            this.button19.TabIndex = 71;
+            this.button19.Text = "Загрузить";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1545, 731);
+            this.Controls.Add(this.button19);
             this.Controls.Add(this.button18);
             this.Controls.Add(this.label30);
             this.Controls.Add(this.label29);
@@ -849,6 +861,7 @@
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Button button19;
     }
 }
 
