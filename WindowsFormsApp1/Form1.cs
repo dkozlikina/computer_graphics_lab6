@@ -1392,31 +1392,36 @@ namespace WindowsFormsApp1
                         writer.WriteLine("v " + task2points[i].x.ToString() + " " +  task2points[i].y.ToString() + " " + task2points[i].z.ToString());
                     }
 
-                    for (int i = 0; i < task2points.Count - 2; i++)
-                    {
-                        //writer.WriteLine("f " + (i).ToString() + " " + (i + 1).ToString() + " " + (i + task2startCount).ToString());
-                        writer.WriteLine("f " + (i).ToString() + " " + (i + 1).ToString() + " " + (i + 2).ToString());
-                    }
+                    //for (int i = 0; i < task2points.Count - 2; i++)
+                    //{
+                    //    //writer.WriteLine("f " + (i).ToString() + " " + (i + 1).ToString() + " " + (i + task2startCount).ToString());
+                    //    writer.WriteLine("f " + (i).ToString() + " " + (i + 1).ToString() + " " + (i + 2).ToString());
+                    //}
 
                     for (int j = 0; j < divi; j++)
                     {
-                        for (int k = 0; k < task2startCount - 1; k++)
+                        for (int k = 0; k < task2startCount; k++)
                         {
                             // 0 1 4
-                            writer.WriteLine("f " + (j * task2startCount + k).ToString() + " " + (j * task2startCount + k + 1).ToString() + " " + (j * task2startCount + k + task2startCount + 1).ToString());
-                            //edges.Add(new edge(task2points[j * points.Count + k], task2points[j * points.Count + k + 1])); // 0 1 ;
-                            //edges.Add(new edge(task2points[j * points.Count + k + 1], task2points[j * points.Count + k + points.Count + 1])); // 1 4
-                            //edges.Add(new edge(task2points[j * points.Count + k], task2points[j * points.Count + k + 1 + points.Count])); // 0 4
+                            //writer.WriteLine("f " + (j * task2startCount + k).ToString() + " " + ((j * task2startCount + k + 1)).ToString() + " " + ((j * task2startCount + task2startCount + 1)).ToString());
+                            //writer.WriteLine("f " + (j * task2startCount + k).ToString() + " " + ((j * task2startCount + task2startCount)).ToString() + " " + ((j * task2startCount + task2startCount + 1)).ToString());
+
+                            writer.WriteLine("f " + (j * task2startCount + k + 1).ToString() + " " + ((j * task2startCount + k + 1 + 1)).ToString() + " " + ((j * task2startCount + task2startCount + 1 + 1)).ToString());
+                            writer.WriteLine("f " + (j * task2startCount + k + 1).ToString() + " " + ((j * task2startCount + + k + task2startCount + 1)).ToString() + " " + ((j * task2startCount + task2startCount + 1 + 1)).ToString());
+
+                            //writer.WriteLine("f " + (j * task2startCount + k + 1).ToString() + " " + ((j * task2startCount + k + 1 + 1) % (divi * task2startCount)).ToString() + " " + ((j * task2startCount + task2startCount + 1 + 1) % (divi * task2startCount)).ToString());
+                            //writer.WriteLine("f " + (j * task2startCount + k + 1).ToString() + " " + ((j * task2startCount + task2startCount + 1) % (divi * task2startCount)).ToString() + " " + ((j * task2startCount + task2startCount + 1 + 1) % (divi * task2startCount)).ToString());
+
                         }
 
-                        for (int k = 0; k < task2startCount - 2; k++)
-                        {
-                            // 5 4 1
-                            writer.WriteLine("f " + (j * task2startCount + k + task2startCount + 2).ToString() + " " + (j * task2startCount + k + 1).ToString() + " " + (j * task2startCount + k + task2startCount + 1).ToString());
-                            //edges.Add(new edge(task2points[j * points.Count + k], task2points[j * points.Count + k + 1])); // 0 1 ;
-                            //edges.Add(new edge(task2points[j * points.Count + k + 1], task2points[j * points.Count + k + points.Count + 1])); // 1 4
-                            //edges.Add(new edge(task2points[j * points.Count + k], task2points[j * points.Count + k + 1 + points.Count])); // 0 4
-                        }
+                        //for (int k = 0; k < task2startCount - 2; k++)
+                        //{
+                        //    // 5 4 1
+                        //    writer.WriteLine("f " + (j * task2startCount + k + task2startCount + 2).ToString() + " " + (j * task2startCount + k + 1).ToString() + " " + (j * task2startCount + k + task2startCount + 1).ToString());
+                        //    //edges.Add(new edge(task2points[j * points.Count + k], task2points[j * points.Count + k + 1])); // 0 1 ;
+                        //    //edges.Add(new edge(task2points[j * points.Count + k + 1], task2points[j * points.Count + k + points.Count + 1])); // 1 4
+                        //    //edges.Add(new edge(task2points[j * points.Count + k], task2points[j * points.Count + k + 1 + points.Count])); // 0 4
+                        //}
                     }
                 }
             }
